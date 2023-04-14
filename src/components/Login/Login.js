@@ -1,5 +1,6 @@
 import "./Login.css";
 import { useState } from "react";
+import { loginWithEmailAndPassword } from "../../firebase.js";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -13,7 +14,9 @@ function Login() {
     setPassword(event.target.value);
   };
 
-  const loginHandler = () => {};
+  const loginHandler = () => {
+    loginWithEmailAndPassword(email, password);
+  };
 
   return (
     <div className="login">
@@ -34,7 +37,7 @@ function Login() {
         ></input>
       </p>
       <p>
-        <input type="button" value="Login"></input>
+        <input type="button" value="Login" onClick={loginHandler}></input>
       </p>
     </div>
   );
