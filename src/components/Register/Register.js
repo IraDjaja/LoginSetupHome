@@ -1,11 +1,21 @@
 import "./Register.css";
-import { useState } from "react";
-import { registerWithEmailAndPassword } from "../../firebase.js";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { registerWithEmailAndPassword, auth } from "../../firebase.js";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 function Setup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [user, loading, error] = useAuthState(auth);
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (loading) {
+      // maybe trigger a loading screen
+      return;
+    }
+    if (user) navigate("/setup");
+  }, [user, loading]);
 
   const emailHandler = (event) => {
     setEmail(event.target.value);
