@@ -1,6 +1,16 @@
 import "./Setup.css";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  doc,
+  updateDoc,
+} from "firebase/firestore";
+import { db, auth, storage } from "../../firebase.js";
+import { ref, uploadBytesResumable } from "firebase/storage";
+import { v4 as uuidv4 } from "uuid";
 
 function Setup() {
   const [name, setName] = useState("");
@@ -19,7 +29,49 @@ function Setup() {
     setPhoto(event.target.files[0]);
   };
 
-  const saveHandler = () => {};
+  const saveHandler = async () => {
+    const photoID = `${uuidv4()}.${photo.name.split(".").pop()}`;
+    // Uploads the photo.
+    const storageRef = ref(storage, `photos/${photoID}`);
+    const uploadTask = uploadBytesResumable(storageRef, photo);
+    uploadTask.on(
+      "state_changed",
+      null,
+      (error) => {
+        switch (error.code) {
+          case "storage/unauthorized":
+            console.alert("User doesn't have permission to access the object");
+            break;
+          case "storage/canceled":
+            console.alert("canceled");
+            break;
+          case "storage/unknown":
+            console.alert(
+              "Unknown error occurred, inspect error.serverResponse"
+            );
+            break;
+          default:
+        }
+      },
+      async () => {
+        // Gets the user.
+        const q = query(
+          collection(db, "users"),
+          where("email", "==", auth.currentUser.email)
+        );
+        const querySnapshot = await getDocs(q);
+        let userID = querySnapshot.docs.at(0).id;
+
+        // Updates the user.
+        const userRef = doc(db, "users", userID);
+        await updateDoc(userRef, {
+          name: name,
+          birthYear: birthYear,
+          photoID: photoID,
+        });
+      }
+    );
+  };
 
   return (
     <div className="setup">

@@ -6,6 +6,7 @@ import {
   signOut,
 } from "firebase/auth";
 import { getFirestore, collection, addDoc } from "firebase/firestore";
+import { getStorage } from "firebase/storage";
 
 const firebaseApp = initializeApp({
   apiKey: "AIzaSyB5uYCEe17bWgwbzNpUW3gzsz4XNv0L2c0",
@@ -17,6 +18,7 @@ const firebaseApp = initializeApp({
 });
 const auth = getAuth(firebaseApp);
 const db = getFirestore(firebaseApp);
+const storage = getStorage(firebaseApp);
 
 const loginWithEmailAndPassword = async (email, password) => {
   try {
@@ -50,6 +52,8 @@ const logout = () => {
 
 export {
   auth,
+  db,
+  storage,
   loginWithEmailAndPassword,
   registerWithEmailAndPassword,
   logout,
