@@ -1,9 +1,9 @@
-import "./Login.css";
+import "./Register.css";
 import { useState } from "react";
-import { loginWithEmailAndPassword } from "../../firebase.js";
+import { registerWithEmailAndPassword } from "../../firebase.js";
 import { Link } from "react-router-dom";
 
-function Login() {
+function Setup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -15,13 +15,13 @@ function Login() {
     setPassword(event.target.value);
   };
 
-  const loginHandler = () => {
-    loginWithEmailAndPassword(email, password);
+  const registerHandler = () => {
+    registerWithEmailAndPassword(email, email, password);
   };
 
   return (
-    <div className="login">
-      <h1 className="text">Login</h1>
+    <div className="register">
+      <h1 className="text">Register</h1>
       <p>
         <input
           value={email}
@@ -38,13 +38,13 @@ function Login() {
         ></input>
       </p>
       <p>
-        <input type="button" value="Login" onClick={loginHandler}></input>
+        <input type="button" value="Register" onClick={registerHandler}></input>
       </p>
       <p>
-        <Link to="/register">Register</Link>
+        <Link to="/">Login</Link>
       </p>
     </div>
   );
 }
 
-export default Login;
+export default Setup;
