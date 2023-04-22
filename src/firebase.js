@@ -22,11 +22,9 @@ const storage = getStorage(firebaseApp);
 
 const loginWithEmailAndPassword = async (email, password) => {
   try {
-    console.log(email, password);
     await signInWithEmailAndPassword(auth, email, password);
   } catch (err) {
-    console.log(err.code);
-    alert(err.code);
+    throw err;
   }
 };
 

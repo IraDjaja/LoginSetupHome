@@ -1,6 +1,10 @@
 import "./Login.css";
 import { useState, useEffect } from "react";
-import { loginWithEmailAndPassword, auth } from "../../firebase.js";
+import {
+  loginWithEmailAndPassword,
+  auth,
+  registerWithEmailAndPassword,
+} from "../../firebase.js";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
 
@@ -14,7 +18,7 @@ function Login() {
       // maybe trigger a loading screen
       return;
     }
-    if (user) navigate("/setup");
+    if (user) navigate("/home");
   }, [user, loading]);
 
   const emailHandler = (event) => {
@@ -25,8 +29,16 @@ function Login() {
     setPassword(event.target.value);
   };
 
-  const loginHandler = () => {
-    loginWithEmailAndPassword(email, password);
+  const loginHandler = async () => {
+    try {
+      await loginWithEmailAndPassword(email, password);
+    } catch (err) {
+      console.log("loginHandler");
+      if (err.code === "auth/user-not-found") {
+        registerWithEmailAndPassword(email, email, password);
+        navigate("/setup");
+      }
+    }
   };
 
   return (
@@ -49,9 +61,6 @@ function Login() {
       </p>
       <p>
         <input type="button" value="Login" onClick={loginHandler}></input>
-      </p>
-      <p>
-        <Link to="/register">Register</Link>
       </p>
     </div>
   );
