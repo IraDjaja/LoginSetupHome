@@ -11,11 +11,14 @@ import {
 import { db, auth, storage } from "../../firebase.js";
 import { ref, uploadBytesResumable } from "firebase/storage";
 import { v4 as uuidv4 } from "uuid";
+import { useNavigate } from "react-router-dom";
 
 function Setup() {
   const [name, setName] = useState("");
   const [birthYear, setBirthYear] = useState("");
   const [photo, setPhoto] = useState(null);
+
+  const navigate = useNavigate();
 
   const nameHandler = (event) => {
     setName(event.target.value);
@@ -69,6 +72,7 @@ function Setup() {
           birthYear: birthYear,
           photoID: photoID,
         });
+        navigate("/home");
       }
     );
   };
@@ -86,7 +90,6 @@ function Setup() {
       {photo != null && (
         <img alt="Preview" src={URL.createObjectURL(photo)}></img>
       )}
-
       <p></p>
       <input type="button" value="Save" onClick={saveHandler}></input>
     </div>
