@@ -4,9 +4,14 @@ import { useState, useEffect } from "react";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { db, auth, storage } from "../../firebase.js";
 import { ref, getDownloadURL } from "firebase/storage";
+import { useNavigate } from "react-router-dom";
 
 function Home() {
-  const logoutHandler = () => {};
+  const navigate = useNavigate();
+  const logoutHandler = async () => {
+    await logout();
+    navigate("/");
+  };
 
   const [user, setUser] = useState(null);
   const fetchUser = async () => {
