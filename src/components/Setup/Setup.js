@@ -80,6 +80,7 @@ function Setup() {
   return (
     <div className="setup">
       <h1 className="text">Setup</h1>
+      <label className="text">Name</label>
       <input value={name} onChange={nameHandler} placeholder="Name"></input>
       <p></p>
       <label className="text">Date of Birth</label>
@@ -88,7 +89,7 @@ function Setup() {
       <label className="text">Photo</label>
       <input className="text" type="file" onChange={photoHandler}></input>
       {photo != null && (
-        <img alt="Preview" src={URL.createObjectURL(photo)}></img>
+        <img alt="Preview" src={URL.createObjectURL(photo)} width="300"></img>
       )}
       <p></p>
       <input type="button" value="Save" onClick={saveHandler}></input>

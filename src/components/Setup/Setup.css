@@ -10,3 +10,7 @@
 .text {
   color: white;
 }
+
+img {
+  border-radius: 10%;
+}

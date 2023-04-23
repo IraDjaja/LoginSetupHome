@@ -53,7 +53,7 @@ function Home() {
       {user && <p placeholder="Date of Birth">{user.birthYear}</p>}
       <p></p>
       <label className="text">Photo</label>
-      {user && <img id="photo" alt="Preview"></img>}
+      {user && <img id="photo" alt="Preview" width="300"></img>}
       <p>
         <input type="button" value="Logout" onClick={logoutHandler}></input>
       </p>
