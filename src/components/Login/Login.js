@@ -1,6 +1,7 @@
 import "./Login.css";
 import { useState, useEffect } from "react";
 import {
+  db,
   loginWithEmailAndPassword,
   auth,
   registerWithEmailAndPassword,
@@ -8,19 +9,40 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
 import Button from "@material-ui/core/Button";
+import { collection, query, where, getDocs } from "firebase/firestore";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [user, loading] = useAuthState(auth);
+  const [userAuth, loading] = useAuthState(auth);
   const navigate = useNavigate();
+
+  const [user, setUser] = useState(null);
+  const fetchUser = async () => {
+    // Gets the user.
+    const q = query(
+      collection(db, "users"),
+      where("email", "==", auth.currentUser.email)
+    );
+    const querySnapshot = await getDocs(q);
+    const user = querySnapshot.docs.at(0).data();
+    setUser(user);
+  };
+
   useEffect(() => {
     if (loading) {
       // maybe trigger a loading screen
       return;
     }
-    if (user) navigate("/home");
-  }, [user, loading, navigate]);
+    if (userAuth) {
+      fetchUser();
+      if (user != null && user.birthYear) {
+        navigate("/home");
+      } else {
+        navigate("/setup");
+      }
+    }
+  }, [userAuth, user, loading, navigate]);
 
   const emailHandler = (event) => {
     setEmail(event.target.value);
@@ -34,8 +56,7 @@ function Login() {
     try {
       await loginWithEmailAndPassword(email, password);
     } catch (err) {
-      console.log("loginHandler");
-      if (err.code === "auth/user-not-found") {
+      if (err.code === "auth/userAuth-not-found") {
         registerWithEmailAndPassword(email, email, password);
         navigate("/setup");
       }
