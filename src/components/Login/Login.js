@@ -7,6 +7,7 @@ import {
 } from "../../firebase.js";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
+import Button from "@material-ui/core/Button";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -60,7 +61,9 @@ function Login() {
         ></input>
       </p>
       <p>
-        <input type="button" value="Login" onClick={loginHandler}></input>
+        <Button variant="contained" color="primary" onClick={loginHandler}>
+          Login
+        </Button>
       </p>
     </div>
   );

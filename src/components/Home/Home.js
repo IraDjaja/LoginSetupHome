@@ -5,6 +5,7 @@ import { collection, query, where, getDocs } from "firebase/firestore";
 import { db, auth, storage } from "../../firebase.js";
 import { ref, getDownloadURL } from "firebase/storage";
 import { useNavigate } from "react-router-dom";
+import Button from "@material-ui/core/Button";
 
 function Home() {
   const navigate = useNavigate();
@@ -55,7 +56,9 @@ function Home() {
       <label className="text">Photo</label>
       {user && <img id="photo" alt="Preview" width="300"></img>}
       <p>
-        <input type="button" value="Logout" onClick={logoutHandler}></input>
+        <Button variant="contained" color="primary" onClick={logoutHandler}>
+          Logout
+        </Button>
       </p>
     </div>
   );

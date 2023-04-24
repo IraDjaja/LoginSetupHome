@@ -12,6 +12,7 @@ import { db, auth, storage } from "../../firebase.js";
 import { ref, uploadBytesResumable } from "firebase/storage";
 import { v4 as uuidv4 } from "uuid";
 import { useNavigate } from "react-router-dom";
+import Button from "@material-ui/core/Button";
 
 function Setup() {
   const [name, setName] = useState("");
@@ -91,8 +92,11 @@ function Setup() {
       {photo != null && (
         <img alt="Preview" src={URL.createObjectURL(photo)} width="300"></img>
       )}
-      <p></p>
-      <input type="button" value="Save" onClick={saveHandler}></input>
+      <p>
+        <Button variant="contained" color="primary" onClick={saveHandler}>
+          Save
+        </Button>
+      </p>
     </div>
   );
 }
