@@ -5,14 +5,14 @@ import {
   auth,
   registerWithEmailAndPassword,
 } from "../../firebase.js";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
 import Button from "@material-ui/core/Button";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [user, loading, error] = useAuthState(auth);
+  const [user, loading] = useAuthState(auth);
   const navigate = useNavigate();
   useEffect(() => {
     if (loading) {
@@ -20,7 +20,7 @@ function Login() {
       return;
     }
     if (user) navigate("/home");
-  }, [user, loading]);
+  }, [user, loading, navigate]);
 
   const emailHandler = (event) => {
     setEmail(event.target.value);
