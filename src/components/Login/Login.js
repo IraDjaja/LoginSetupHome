@@ -35,12 +35,13 @@ function Login() {
       return;
     }
     if (userAuth) {
-      fetchUser();
-      if (user != null && user.birthYear) {
-        navigate("/home");
-      } else {
-        navigate("/setup");
-      }
+      fetchUser().then(() => {
+        if (user != null && user.birthYear) {
+          navigate("/home");
+        } else {
+          navigate("/setup");
+        }
+      });
     }
   }, [userAuth, user, loading, navigate]);
 
@@ -56,7 +57,7 @@ function Login() {
     try {
       await loginWithEmailAndPassword(email, password);
     } catch (err) {
-      if (err.code === "auth/userAuth-not-found") {
+      if (err.code === "auth/user-not-found") {
         registerWithEmailAndPassword(email, email, password);
         navigate("/setup");
       }
