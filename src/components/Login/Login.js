@@ -57,7 +57,19 @@ function Login() {
     try {
       await loginWithEmailAndPassword(email, password);
     } catch (err) {
+      if (err.code === "auth/invalid-email") {
+        alert("Invalid email");
+        return;
+      }
+      if (err.code === "auth/wrong-password") {
+        alert("Wrong password");
+        return;
+      }
       if (err.code === "auth/user-not-found") {
+        if (password.length < 6) {
+          alert("Password should be at least 6 characters");
+          return;
+        }
         registerWithEmailAndPassword(email, email, password);
         navigate("/setup");
       }
